@@ -1,0 +1,109 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+$(document).ready(function() {
+  // Change "Purchase Order Number" to "Delivery/Comments"
+  $('.order-wizard-paymentmethod-purchasenumber-module-title').text('Delivery/Comments');
+  
+  // Change "Enter Purchase Order Number (Optional)" to "If specified, items will be delivered to this location. Limited to 43 characters currently."
+  $('.order-wizard-paymentmethod-purchasenumber-module-purchase-order-label').html('This is where your item will be delivered');
+});
+
+<script>
+// Get the parent element
+const parent = document.querySelector(".order-wizard-paymentmethod-purchasenumber-module-row");
+
+// Create a new text node
+const textNode = document.createTextNode("This section is not for Department Charge Info. If using department charge, please switch to Department Charge. 1.) Click the home button in the top left (Our logo). 2.) Then navigate to the top right to find your name and click. 3.) A pop up should appear, in the top left of that, select Account Overview. 4.) Enable the red Department Charge button.");
+
+// Append the text node to the parent element
+parent.appendChild(textNode); 
+$(document).ready(function() {
+  $('#purchase-order-number').on('input', function() {
+    if ($(this).val().length > 43) {
+      $(this).val($(this).val().substr(0, 43));
+    }
+  });
+});
+
+$(document).ready(function() {
+  // Select the Payment Method section and append the message with the flashing alert icon
+  $('.order-wizard-paymentmethod-selector-module').append('<p style="margin-top:10px;padding:10px;background-color:#fff3cd;border:1px solid #ffeeba;border-radius:5px;position:relative;"><i style="position:absolute;top:50%;left:0;transform:translateY(-50%);margin-right:10px;color:#ff0000;animation:blink 1s infinite;" class="fas fa-exclamation-triangle"></i><b>Please select Credit / Debit Card if not using Department Charge</b></p>');
+});
+
+</script>
+
+
+
+
+<style>
+.order-wizard-paymentmethod-selector-module-header-nav {
+    display: block!important;
+}
+button.order-wizard-submitbutton-module-button {
+    display: none;
+}
+.order-wizard-paymentmethod-purchasenumber-module {
+    background: #fdb813;
+}
+.order-wizard-paymentmethod-purchasenumber-module {
+    background: #fdb813;
+}
+h3.order-wizard-paymentmethod-purchasenumber-module-title {
+    color: white;
+}
+label.order-wizard-paymentmethod-purchasenumber-module-purchase-order-label {
+    color: black;
+}
+.creditcard-edit-form-checkbox {
+    display: none!important;
+}
+.order-wizard-paymentmethod-giftcertificates-module {
+    display: none;
+}
+	.cart-summary-expander-head {display: none;}
+	.order-wizard-promocodeform-expander-head {display: none;}
+</style>
+
+
+<script>
+const continueButton = document.querySelector('.order-wizard-step-button-continue');
+const paymentMethodButton = document.querySelector('.order-wizard-paymentmethod-selector-module-button[value="creditcard"]');
+const invoiceBalanceValue = document.querySelector('.order-wizard-paymentmethod-invoice-module-balance-value');
+const errorText = document.createElement('p');
+errorText.classList.add('error-text');
+errorText.innerHTML = 'Please switch to Credit/Debit Card (Scroll up to switch) <br><br>Otherwise, switch to <a href="https://order.centralstores.iastate.edu/scs/my_account.ssp?whence=" target="_blank">Department Charge (Click here and enable), then refresh this page.</a>';
+errorText.style.color = 'red';
+errorText.style.fontWeight = 'bold';
+
+function validateConditions() {
+    if (!paymentMethodButton.classList.contains('selected') && invoiceBalanceValue.innerText === '$0.00') {
+        continueButton.disabled = true;
+        continueButton.parentNode.insertBefore(errorText, continueButton.nextSibling);
+    } else {
+        continueButton.disabled = false;
+        if (errorText.parentNode) {
+            errorText.parentNode.removeChild(errorText);
+        }
+    }
+}
+
+validateConditions();
+
+paymentMethodButton.addEventListener('click', validateConditions);
+invoiceBalanceValue.addEventListener('change', validateConditions);
+
+paymentMethodButton.addEventListener('click', function() {
+    const timeoutDuration = 2000;
+    const invoiceButton = document.querySelector('.order-wizard-paymentmethod-selector-module-button[value="invoice"]');
+    if (invoiceButton) {
+        invoiceButton.style.display = 'none';
+    }
+    const timeout = setTimeout(() => {
+        validateConditions();
+    }, timeoutDuration)
+
+});
+
+</script>
