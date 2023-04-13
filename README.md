@@ -1,1 +1,2 @@
-Scripts created for MBS to Netsuite ERP transition.
+- Scripts created for MBS to Netsuite ERP transition.
+- Scripts to alter NetSuites native functionality issues with customizations.
